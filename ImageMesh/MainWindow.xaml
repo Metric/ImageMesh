@@ -1,0 +1,51 @@
+﻿<Window x:Class="ImageMesh.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:ImageMesh"
+        mc:Ignorable="d"
+        xmlns:opengltk="clr-namespace:OpenTK;assembly=OpenTK.GLControl"
+        Title="ImageMesh" Height="768" Width="1024" Loaded="Window_Loaded" Closing="Window_Closing">
+    <Grid>
+        <WindowsFormsHost x:Name="HostControl" Loaded="HostControl_Loaded" Margin="0,0,250,0">
+            <opengltk:GLControl x:Name="glControl" Paint="GLControl_Paint" Resize="GLControl_Resize" MouseMove="GlControl_MouseMove" Margin="0, 0, 0, 0"></opengltk:GLControl>
+           <!-- <opengl:GlControl ContextCreated="GlControl_ContextCreated" Render="GlControl_Render" MouseMove="GlControl_MouseMove"></opengl:GlControl>-->
+        </WindowsFormsHost>
+        <Grid HorizontalAlignment="Right" Width="250">
+            <CheckBox Content="Culling" x:Name="chkCulling" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Checked="chkCulling_Checked" Unchecked="chkCulling_Unchecked"/>
+            <CheckBox Content="Wireframe" x:Name="chkWireframe" Visibility="Hidden" HorizontalAlignment="Left" Margin="88,10,0,0" VerticalAlignment="Top" Unchecked="chkWireframe_Unchecked" Checked="chkWireframe_Checked"/>
+            <ComboBox HorizontalAlignment="Left" x:Name="cbDisplaceModes" Margin="10,70,0,0" VerticalAlignment="Top" Width="126" SelectionChanged="cbDisplaceModes_SelectionChanged"/>
+            <CheckBox Content="Displace" x:Name="chkDisplace" HorizontalAlignment="Left" Margin="10,50,0,0" VerticalAlignment="Top" Checked="chkDisplace_Checked" Unchecked="chkDisplace_Unchecked"/>
+            <TextBox HorizontalAlignment="Right" x:Name="txtDisplace" Height="23" Margin="0,70,64,0" TextWrapping="Wrap" Text="1.0" VerticalAlignment="Top" Width="30" TextAlignment="Right" TextChanged="txtDisplace_TextChanged"/>
+            <TextBlock HorizontalAlignment="Left" Margin="10,106,0,0" TextWrapping="Wrap" Text="Pixel Sampling" VerticalAlignment="Top"/>
+            <ComboBox HorizontalAlignment="Left" x:Name="cbSampling" Margin="10,127,0,0" VerticalAlignment="Top" Width="77" SelectionChanged="cbSampling_SelectionChanged">
+                <ComboBoxItem Content="Single"/>
+                <ComboBoxItem Content="Average" IsSelected="True"/>
+                <ComboBoxItem Content="Min"/>
+                <ComboBoxItem Content="Max"/>
+                <ComboBoxItem Content="Gaussian"/>
+            </ComboBox>
+            <TextBlock HorizontalAlignment="Left" Margin="104,106,0,0" TextWrapping="Wrap" Text="Power" VerticalAlignment="Top"/>
+            <TextBox HorizontalAlignment="Left" x:Name="txtPixelPower" Height="22" Margin="104,127,0,0" TextWrapping="Wrap" Text="0.01" VerticalAlignment="Top" Width="32" TextAlignment="Right" TextChanged="txtPixelPower_TextChanged"/>
+            <TextBlock HorizontalAlignment="Left" Margin="151,106,0,0" TextWrapping="Wrap" Text="Radius" VerticalAlignment="Top"/>
+            <TextBox HorizontalAlignment="Left" x:Name="txtPixelRadius" Height="22" Margin="151,127,0,0" TextWrapping="Wrap" Text="1" VerticalAlignment="Top" Width="35" TextAlignment="Right" TextChanged="txtPixelRadius_TextChanged"/>
+            <TextBlock HorizontalAlignment="Left" Margin="10,164,0,0" TextWrapping="Wrap" Text="Decimation" VerticalAlignment="Top" Width="79"/>
+            <TextBox HorizontalAlignment="Left" x:Name="txtTolerance" Height="22" Margin="10,185,0,0" TextWrapping="Wrap" Text="1" VerticalAlignment="Top" Width="32" TextAlignment="Right" TextChanged="txtTolerance_TextChanged"/>
+            <Button Content="Image File" HorizontalAlignment="Left" Margin="10,303,0,0" VerticalAlignment="Top" Width="75" Click="Button_Click"/>
+            <TextBlock HorizontalAlignment="Left" x:Name="lImageName" Margin="92,303,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="148" ClipToBounds="True" Height="20"/>
+            <TextBlock HorizontalAlignment="Left" Margin="10,282,0,0" TextWrapping="Wrap" Text="Image Settings" VerticalAlignment="Top"/>
+            <Slider x:Name="slImageScale" Margin="10,358,10,0" VerticalAlignment="Top" LargeChange="0.25" Maximum="1" Minimum="0.25" SmallChange="0.25" TickFrequency="0.25" TickPlacement="BottomRight" Value="1" IsSnapToTickEnabled="True" ValueChanged="slImageScale_ValueChanged"/>
+            <TextBlock HorizontalAlignment="Left" Margin="10,337,0,0" TextWrapping="Wrap" Text="Image Scale" VerticalAlignment="Top"/>
+            <TextBlock HorizontalAlignment="Left" Margin="10,0,0,32" TextWrapping="Wrap" Text="Triangle Count" Width="103" Height="16" VerticalAlignment="Bottom"/>
+            <TextBlock HorizontalAlignment="Left" Margin="10,0,0,16" x:Name="lTriangleCount" TextWrapping="Wrap" Text="0" Width="103" Height="16" VerticalAlignment="Bottom"/>
+            <TextBlock HorizontalAlignment="Left" Margin="10,0,0,70" TextWrapping="Wrap" Text="Time to Generate" Width="103" Height="16" VerticalAlignment="Bottom"/>
+            <TextBlock HorizontalAlignment="Left" Margin="10,0,0,54" x:Name="lGenTime" TextWrapping="Wrap" Text="0" Width="103" Height="16" VerticalAlignment="Bottom"/>
+            <Button Content="Generate Flat" x:Name="btnGenFlat" HorizontalAlignment="Left" Margin="10,397,0,0" VerticalAlignment="Top" Width="103" Click="btnGenFlat_Click"/>
+            <Button Content="Generate Sphere" x:Name="btnGenSphere" HorizontalAlignment="Left" Margin="137,397,0,0" VerticalAlignment="Top" Width="103" Click="btnGenSphere_Click"/>
+            <Button Content="Export" HorizontalAlignment="Left" x:Name="btnExport" Margin="10,436,0,0" VerticalAlignment="Top" Width="230" Height="35" IsEnabled="False" Click="btnExport_Click"/>
+            <Button Content="Import" HorizontalAlignment="Left" x:Name="btnImport" Margin="10,0,0,101" VerticalAlignment="Bottom" Width="230" Height="35" IsEnabled="True" Click="btnImport_Click"/>
+            <TextBlock Margin="0,476,0,219" x:Name="lGenMessage" TextWrapping="Wrap" Text="Generating Mesh... This could take a few..." VerticalAlignment="Center" TextAlignment="Center" Foreground="Black" FontSize="12" Height="42" Visibility="Hidden"/>
+        </Grid>
+    </Grid>
+</Window>
