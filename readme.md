@@ -8,12 +8,12 @@ Features
 =========
 * Displacement: Grayscale Average, Red, Green, Blue, Red Green Average, Blue Green Average, and Red Blue Average. Due note sphere with displacement may have visible seams or not fully connected. Displacement is mainly recommended for flat only.
 * Pixel Sampling Methods: Single Pixel, Average (with radius), Gaussian, Min (with radius), and Max (with radius)
-* Decimation: Think of it like a tolerance for color ranges. It affects what pixels should be combined into one vertice based on the pixel sampling method. This also affects the number of vertices. 0 for no decimation.
+* Decimation: Think of it like a tolerance for color ranges. It affects what pixels should be combined into one vertex based on the pixel sampling method. This also affects the number of vertices. 0 for no decimation.
 * Image scaling from 100% to 25%
 * Generate a sphere or a flat mesh
 * Import previous .imesh files for viewing only
 * Export to a simple ascii based .imesh file 
-* Triangle indice order is Clockwise.
+* Triangle indices order is Clockwise.
 
 Mouse Controls
 =================
@@ -41,7 +41,7 @@ Building It Yourself
 =====================
 The application relies only on OpenTK 3.0 and OpenTK Control 3.0. Which, both can be installed via Nuget. OpenTK is only used for the viewer / editor part.
 
-The classes have been separated out from the form / viewer / editor. So, you can technically use the classes without any dependicies, if you so wish.
+The classes have been separated out from the form / viewer / editor. So, you can technically use the classes without any dependencies, if you so wish.
 
 Unreal Engine 4 Caveats
 =========================
