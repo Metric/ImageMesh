@@ -35,7 +35,7 @@ This does not build the mesh for you. This just reads in and parses the vertices
 
 Builds
 =======
-A precompiled build is available for download for Windows: 
+A precompiled build is available for download for Windows: [ImageMesh](http://vantagetechnic.com/ImageMesh-0.1.0.zip)
 
 Building It Yourself
 =====================
