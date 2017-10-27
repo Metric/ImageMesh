@@ -4,6 +4,8 @@ ImageMesh
 Ever wanted to create Sky Spheres / Sky Boxes like in Homeworld 2? Well, this utility is just for you!
 A simple utility for converting images to either a flat mesh or a sphere using only vertex colors.
 
+If you are looking for information on this technique see: (https://simonschreibt.de/gat/homeworld-2-backgrounds/)
+
 Features
 =========
 * Displacement: Grayscale Average, Red, Green, Blue, Red Green Average, Blue Green Average, and Red Blue Average. Due note sphere with displacement may have visible seams or not fully connected. Displacement is mainly recommended for flat only.

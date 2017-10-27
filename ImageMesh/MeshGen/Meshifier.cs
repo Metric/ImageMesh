@@ -8,6 +8,8 @@ using System.Drawing;
 using ImageMesh.Samplers;
 using ImageMesh.ThreeMath;
 
+using DelaunayTriangulator;
+
 namespace ImageMesh.MeshGen
 {
     public class Meshifier
@@ -28,11 +30,6 @@ namespace ImageMesh.MeshGen
         }
 
         public int Tolerance
-        {
-            get;set;
-        }
-
-        public float Decimation
         {
             get;set;
         }
@@ -62,11 +59,10 @@ namespace ImageMesh.MeshGen
         public Meshifier(Bitmap b)
         {
             img = original = b;
-            Decimation = 1;
             Tolerance = 1;
             Sampler = new PixelSampler();
             DisplacementPower = 1.0f;
-            imageScale = 1;
+            imageScale = 1.0f;
         }
 
         public void ScaleImage(float perc)
@@ -97,7 +93,6 @@ namespace ImageMesh.MeshGen
             float cy = (img.Height - 1) * 0.5f;
 
             List<Vector3f> points = new List<Vector3f>();
-            List<Vector3f> graph = new List<Vector3f>();
 
             float? lastPixel = null;
 
@@ -110,6 +105,7 @@ namespace ImageMesh.MeshGen
                     float g = (float)(c.R + c.G + c.B) / 3.0f;
 
                     Vector3f p = new Vector3f(0,0,0);
+
                     //store the index for faster processing of triangle generation
                     p.index = points.Count;
                     p.color = c;
@@ -120,7 +116,6 @@ namespace ImageMesh.MeshGen
                     if (lastPixel == null)
                     {
                         lastPixel = g;
-                        graph.Add(p);
                         points.Add(p);
                     }
                     else
@@ -133,14 +128,7 @@ namespace ImageMesh.MeshGen
                         if (len > Tolerance || lengthFit || heightFit)
                         {
                             lastPixel = g;
-                            graph.Add(p);
                             points.Add(p);
-                        }
-                        else
-                        {
-                            //as a placeholder for an invalid spot in the graph
-                            p.index = -1;
-                            graph.Add(p);
                         }
                     }
                 }
@@ -148,7 +136,7 @@ namespace ImageMesh.MeshGen
 
             //create triangles while flat still
             //it just makes it easier
-            CreateTriangles(ref m, graph, ref points);
+            CreateTriangles(ref m, ref points);
 
             //Displace the points if necessary
             if(UseDisplacement)
@@ -156,15 +144,18 @@ namespace ImageMesh.MeshGen
                 Displace(points);
             }
 
+            //small optimization
+            float rgbM = 1.0f / 255.0f;
+
             //Colors, points, and normals share the same amount of data
-            for(int i = 0; i < points.Count; i++)
+            for (int i = 0; i < points.Count; i++)
             {
 
                 Vector3f p = points[i];
                 Color c = p.color;
-                m.Colors.Add((float)c.R / 255.0f);
-                m.Colors.Add((float)c.G / 255.0f);
-                m.Colors.Add((float)c.B / 255.0f);
+                m.Colors.Add((float)c.R * rgbM);
+                m.Colors.Add((float)c.G * rgbM);
+                m.Colors.Add((float)c.B * rgbM);
 
                 //Convert to sphere coordinates if needed
                 if(Sphererize)
@@ -190,6 +181,8 @@ namespace ImageMesh.MeshGen
         //Displaces via Z axis
         protected void Displace(List<Vector3f> points)
         {
+            float rgbM = 1.0f / 255.0f;
+
             for (int i = 0; i < points.Count; i++)
             {
                 Vector3f p = points[i];
@@ -223,7 +216,7 @@ namespace ImageMesh.MeshGen
                         break;
                 }
 
-                p.z = g / 255.0f * DisplacementPower;
+                p.z = g * rgbM * DisplacementPower;
             }
         }
 
@@ -241,23 +234,23 @@ namespace ImageMesh.MeshGen
         }
 
         //Generates the Triangles / Indices
-        protected void CreateTriangles(ref MeshG m, List<Vector3f> graph, ref List<Vector3f> points)
+        protected void CreateTriangles(ref MeshG m, ref List<Vector3f> points)
         {
             TriangleCount = 0;
 
-            DelaunayTriangulator.Triangulator trify = new DelaunayTriangulator.Triangulator();
+            Triangulator trify = new Triangulator();
 
-            List<DelaunayTriangulator.Vertex> vertices = new List<DelaunayTriangulator.Vertex>();
+            List<Vertex> vertices = new List<Vertex>();
 
             foreach(Vector3f p in points)
             {
-                vertices.Add(new DelaunayTriangulator.Vertex(p.x, p.y));
+                vertices.Add(new Vertex(p.x, p.y));
             }
 
-            List<DelaunayTriangulator.Triad> triads = trify.Triangulation(vertices);
+            List<Triad> triads = trify.Triangulation(vertices);
             TriangleCount = triads.Count;
 
-            foreach(DelaunayTriangulator.Triad t in triads)
+            foreach(Triad t in triads)
             {
                 Vector3f a = points[t.a];
                 Vector3f b = points[t.b];

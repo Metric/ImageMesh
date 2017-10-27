@@ -34,9 +34,11 @@ namespace ImageMesh.Samplers
                 }
             }
 
-            rc /= samples;
-            gc /= samples;
-            bc /= samples;
+            float sMax = 1.0f / samples;
+
+            rc *= sMax;
+            gc *= sMax;
+            bc *= sMax;
 
             return Color.FromArgb((int)rc, (int)gc, (int)bc);
         }

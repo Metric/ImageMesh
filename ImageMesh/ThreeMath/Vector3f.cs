@@ -17,8 +17,6 @@ namespace ImageMesh.ThreeMath
 
         public Color color;
 
-        public float ro;
-
         public float Length
         {
             get
@@ -40,7 +38,6 @@ namespace ImageMesh.ThreeMath
             this.x = 0;
             this.y = 0;
             this.z = 0;
-            ro = -1;
             index = -1;
         }
 
@@ -49,7 +46,6 @@ namespace ImageMesh.ThreeMath
             this.x = x;
             this.y = y;
             this.z = z;
-            ro = -1;
             index = -1;
         }
 
@@ -58,7 +54,6 @@ namespace ImageMesh.ThreeMath
             Vector3f n = new Vector3f(this.x, this.y, this.z);
             n.color = this.color;
             n.index = this.index;
-            n.ro = this.ro;
             return n;
         }
 
@@ -159,32 +154,22 @@ namespace ImageMesh.ThreeMath
 
         public static bool operator < (Vector3f p1, Vector3f p2)
         {
-            if (p1.ro == p2.ro)
+            if (p1.x == p2.x)
             {
-                if (p1.x == p2.x)
-                {
-                    return p1.y < p2.y;
-                }
-
-                return p1.x < p2.x;
+                return p1.y < p2.y;
             }
 
-            return p1.ro < p2.ro;
+            return p1.x < p2.x;
         }
 
         public static bool operator > (Vector3f p1, Vector3f p2)
         {
-            if (p1.ro == p2.ro)
+            if (p1.x == p2.x)
             {
-                if (p1.x == p2.x)
-                {
-                    return p1.y > p2.y;
-                }
-
-                return p1.x > p2.x;
+                return p1.y > p2.y;
             }
 
-            return p1.ro > p2.ro;
+            return p1.x > p2.x;
         }
 
         public static Vector3f operator - (Vector3f p1, Vector3f p2)
